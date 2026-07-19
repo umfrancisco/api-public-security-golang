@@ -8,7 +8,7 @@ import (
 )
 
 type Crime struct {
-	ID string `json:"id"`
+	ID int `json:"id"`
 	City string `json:"city"`
 	Year int `json:"year"`
 	Homicides float64 `json:"homicides"`
@@ -58,6 +58,7 @@ func ReadCSV(path string, city string) ([]Crime, error) {
 		robberies, _ := strconv.ParseFloat(row[3], 64)
 		
 		records = append(records, Crime{
+			ID: i,
 			City: city,
 			Year: year,
 			Homicides: homicides,

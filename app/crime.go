@@ -3,7 +3,8 @@ package app
 import (
 	"context"
 	"encoding/csv"
-	"os"
+	"net/http"
+	"fmt"
 	"strconv"
 )
 
@@ -22,7 +23,7 @@ type CrimeResponse struct {
 
 //encore:api public path=/data
 func GetData(ctx context.Context) (*CrimeResponse, error) {
-	crimeRecord, err := ReadCSV("data/TaxaDelito-São Paulo_20260704_164249.csv", "São Paulo")
+	crimeRecord, err := ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-S%C3%A3o%20Paulo_20260704_164249.csv", "São Paulo")
 	crimeResponse := &CrimeResponse{Content: crimeRecord}
 	if err != nil {
 		return nil, err
@@ -30,15 +31,15 @@ func GetData(ctx context.Context) (*CrimeResponse, error) {
 	return crimeResponse, nil
 }
 
-func ReadCSV(path string, city string) ([]Crime, error) {
-	file, err := os.Open(path)
+func ReadCSV(url string, city string) ([]Crime, error) {
+	
+	resp, err := http.Get(url)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to fetch CSV: %w", err)
 	}
+	defer resp.Body.Close()
 	
-	defer file.Close()
-	
-	reader := csv.NewReader(file)
+	reader := csv.NewReader(resp.Body)
 	
 	rows, err := reader.ReadAll()
 	if err != nil {

@@ -16,12 +16,6 @@ type Crime struct {
 	Robberies float64 `json:"robberies"`
 }
 
-type CrimeRecord struct {
-	City string `json:"city"`
-	Year int `json:"year"`
-	Value float64 `json:"value"`
-}
-
 type CrimeResponse struct {
 	Content []Crime
 }
@@ -58,10 +52,10 @@ func ReadCSV(path string, city string) ([]Crime, error) {
 			continue
 		}
 		
-		year, _ := strconv.Atoi(row[1])
-		homicides, _ := strconv.ParseFloat(row[2], 64)
-		thefts, _ := strconv.ParseFloat(row[3], 64)
-		robberies, _ := strconv.ParseFloat(row[4], 64)
+		year, _ := strconv.Atoi(row[0])
+		homicides, _ := strconv.ParseFloat(row[1], 64)
+		thefts, _ := strconv.ParseFloat(row[2], 64)
+		robberies, _ := strconv.ParseFloat(row[3], 64)
 		
 		records = append(records, Crime{
 			City: city,

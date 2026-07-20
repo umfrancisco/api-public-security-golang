@@ -21,9 +21,40 @@ type CrimeResponse struct {
 	Content []Crime
 }
 
-//encore:api public path=/data
-func GetData(ctx context.Context) (*CrimeResponse, error) {
-	crimeRecord, err := ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-S%C3%A3o%20Paulo_20260704_164249.csv", "São Paulo")
+//encore:api public path=/api/:city
+func GetData(ctx context.Context, city string) (*CrimeResponse, error) {
+	var crimeRecord []Crime
+	var err error
+	if city == "sao_paulo" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-S%C3%A3o%20Paulo_20260704_164249.csv", "São Paulo")	
+	}
+	if city == "campinas" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-Campinas_20260704_194100.csv", "Campinas")
+	}
+	if city == "guarulhos" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-Guarulhos_20260707_161733.csv", "Guarulhos")
+	}
+	if city == "osasco" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-Osasco_20260707_161819.csv", "Osasco")
+	}
+	if city == "ribeirao_preto" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-Ribeir%C3%A3o%20Preto_20260707_161850.csv", "Ribeirão Preto")
+	}
+	if city == "santo_andre" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-Santo%20Andr%C3%A9_20260707_161804.csv", "Santo André")
+	}
+	if city == "santos" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-Santos_20260707_161840.csv", "Santos")
+	}
+	if city == "sorocaba" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-Sorocaba_20260707_161831.csv", "Sorocaba")
+	}
+	if city == "sao_bernardo" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-S%C3%A3o%20Bernardo%20do%20Campo_20260707_161751.csv", "São Bernardo")
+	}
+	if city == "sao_jose_dos_campos" {
+		crimeRecord, err = ReadCSV("https://raw.githubusercontent.com/umfrancisco/api-public-security-golang/refs/heads/master/data/TaxaDelito-S%C3%A3o%20Jos%C3%A9%20dos%20Campos_20260707_161856.csv", "São José dos Campos")
+	}
 	crimeResponse := &CrimeResponse{Content: crimeRecord}
 	if err != nil {
 		return nil, err
